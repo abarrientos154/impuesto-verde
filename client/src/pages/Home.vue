@@ -50,6 +50,53 @@
                 </div>
               </div>
           </q-card>
+          <q-card v-if="mostrar" style="border-radius:12px">
+            <div class="q-pb-md"></div>
+            <div class="column justify-end items-end">
+              <div class="q-py-sm bg-blue column justify-start items-start" style="border-top-left-radius:35px;border-bottom-left-radius:35px; width:70%" >
+                <div class="row justify-center items-center">
+                  <div class="q-mr-xl">
+                    <q-icon class="text-white" size="xl" name="chevron_left" />
+                  </div>
+                  <div class="text-white text-h5" >Resultados</div>
+                </div>
+              </div>
+            </div>
+              <div class="column q-pa-md">
+                <div class="column q-pa-md">
+                  <div class="row" style="width:100%">
+                    <div class="column q-mr-md" style="width:45%">
+                      <div class="text-subtitle2 text-bold q-pb-sm">Emisiones NOx:</div>
+                      <q-input outlined v-model="resultado.nox" disable />
+                    </div>
+                    <div style="width:50%">
+                      <div class="text-subtitle2 text-bold q-pb-sm">Rendimiento Urbano:</div>
+                      <q-input outlined v-model="resultado.rendimiento" disable />
+                    </div>
+                  </div>
+                  <div class="row q-mt-md" style="width:100%">
+                    <div class="column q-mr-md" style="width:45%">
+                      <div class="text-subtitle2 text-bold q-pb-sm">Carga útil:</div>
+                      <q-input outlined v-model="resultado.carga" disable />
+                    </div>
+                    <div style="width:50%">
+                      <div class="text-subtitle2 text-bold q-pb-sm">Numero de asientos:</div>
+                      <q-input outlined v-model="resultado.asiento" disable />
+                    </div>
+                  </div>
+                  <div class="row q-mt-md" style="width:100%">
+                    <div class="column q-mr-md" style="width:45%">
+                      <div class="text-subtitle2 text-bold q-pb-sm">Valor al dia de hoy:</div>
+                      <q-input outlined v-model="resultado.utm" disable />
+                    </div>
+                    <div style="width:50%">
+                      <div class="text-subtitle2 text-bold q-pb-sm">Impuesto a Pagar:</div>
+                      <q-input outlined v-model="resultado.costo" disable />
+                    </div>
+                  </div>
+                </div>
+            </div>
+          </q-card>
         </div>
       </div>
     </div>
@@ -80,7 +127,21 @@ export default {
     async calcular () {
       this.$q.loading.show()
       await this.$api.post('value_utm').then(res => {
-        console.log(res, 'resss')
+        this.utm = res
+        this.inicio = false
+        this.mostrar = true
+        console.log(this.utm, 'respuesta')
+        console.log(this.form, 'form')
+        const resul1 = (35 / this.form.rendimiento)
+        const resul2 = (120 * this.form.nox)
+        const resul3 = resul1 + resul2
+        const resul4 = (this.form.precio * 0.00000006)
+        const resul5 = resul3 * resul4
+        this.resultado.costo = resul5
+        this.resultado.nox = this.form.nox
+        this.resultado.rendimiento = this.form.rendimiento
+        this.resultado.utm = this.utm.searched_utm_value
+        console.log(this.resultado)
         this.$q.loading.hide()
       })
     },
