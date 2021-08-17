@@ -146,11 +146,13 @@ export default {
       })
     },
     async datos () {
+      this.$q.loading.show()
       await this.$api.get('consulta').then(res => {
         if (res) {
           this.todo = res
           this.noRepetirMarcas()
         }
+        this.$q.loading.hide()
       })
     },
     noRepetirMarcas () {
