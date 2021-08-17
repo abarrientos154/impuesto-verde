@@ -36,8 +36,10 @@ const addPrefixToGroup = group => {
 addPrefixToGroup(
   Route.group(() => {
     // Insertar rutas sin protección de autenticación aquí
-    Route.post("login", "UserController.login")
-    Route.post("register", "UserController.register")
+    // Route.post("login", "UserController.login")
+    // Route.post("register", "UserController.register")
+    Route.post("value_utm", "UploadController.dataValueUtm")
+    Route.get("consulta", "DetailVehicleController.consulta")
   })
 );
 

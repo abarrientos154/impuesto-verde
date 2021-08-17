@@ -1,10 +1,10 @@
 'use strict'
 
-const Helpers = use('Helpers')
-const mkdirp = use('mkdirp')
-const User = use('App/Models/User')
-const fs = require('fs')
-var randomize = require('randomatic');
+// const Helpers = use('Helpers')
+// const mkdirp = use('mkdirp')
+// const fs = require('fs')
+// var randomize = require('randomatic');
+const axios = require('axios')
 
 
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
@@ -16,6 +16,17 @@ var randomize = require('randomatic');
  */
 class UploadController {
 
+  async dataValueUtm ({ response }) {
+    const data = await axios({
+      method: 'post',
+      url: 'https://www.calcular.cl/index.php/utm/ajax_call',
+      data: {
+        searchDate: '2021-09-01'
+      }
+    })
+    console.log(data.data, '73486784')
+    response.send(data.data)
+  }
 }
 
 module.exports = UploadController
