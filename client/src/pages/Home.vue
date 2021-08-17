@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="row q-pa-xl">
+    <div class="row q-px-xl q-pb-xl">
       <div class="column q-mr-md" style="width:50%">
         <q-card flat class="" style="border-radius:12px">
           <div class="q-pl-md q-pt-md row items-center">
@@ -10,7 +10,7 @@
           <div class="q-mt-md text-bold text-h5">ASISTENTE DE CÁLCULO DE IMPUESTO A EMISIONES CONTAMINANTES DE VEHÍCULOS NUEVOS</div>
           <div class="q-mt-md text-h7">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.</div>
           <div class="q-mt-md text-h7">Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo.</div>
-          <div class="fondo" style="width:100%;height:120%;"></div>
+          <div class="fondo" style="width:100%;height:100%;"></div>
         </q-card>
       </div>
       <div class="q-mt-xl" style="width:45%">
