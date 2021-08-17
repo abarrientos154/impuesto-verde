@@ -37917,10 +37917,10 @@ const DetailVehicle = use("App/Models/DetailVehicle")
 
 class DetailVehicleSeeder {
     async run() {
-      /* for (let i in data) {
+       for (let i in data) {
         await DetailVehicle.create(data[i])
       }
-      console.log('Finished DetailVehicle') */
+      console.log('Finished DetailVehicle')
     }
   }
 
