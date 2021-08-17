@@ -24,26 +24,27 @@
                   <div class="row" style="width:100%">
                     <div class="column q-mr-md" style="width:45%">
                       <div class="text-subtitle2 text-bold q-pb-sm">Marca:</div>
-                      <q-select outlined v-model="marca" :options="marcasO" option-value="Marca" option-label="Marca" emit-value map-options
-                        @input="filtrarTipos(), tipo = null, modelo = null, form.marca = marca"
-                      />
+                      <q-select outlined v-model="marca" :options="filterMarcas" option-value="Marca" option-label="Marca" label="Seleccione una Marca" use-input input-debounce="0" emit-value map-options
+                        @input="filtrarTipos()" @filter="filterMarca"
+                        :error="$v.marca.$error" @blur="$v.marca.$touch()"/>
                     </div>
                     <div style="width:50%">
                       <div class="text-subtitle2 text-bold q-pb-sm">Tipo de Vehiculo:</div>
-                      <q-select outlined v-model="tipo" :options="tiposO" label="Seleccione una opcion" option-value="Tipo" option-label="Tipo" emit-value map-options
-                        @input="filtrarModelos(), modelo = null, form.tipo = tipo"
-                      />
+                      <q-select outlined v-model="tipo" :options="filterTipos" label="Seleccione una opcion" option-value="Tipo" option-label="Tipo" use-input input-debounce="0" emit-value map-options
+                        @input="filtrarModelos(), modelo = null, form.tipo = tipo" @filter="filterTipo"
+                        :error="$v.tipo.$error" @blur="$v.tipo.$touch()"/>
                     </div>
                   </div>
                   <div class="column q-mt-md">
                     <div class="text-subtitle2 text-bold q-pb-sm">Modelo:</div>
-                    <q-select outlined v-model="modelo" :options="modelosO" label="Seleccione el modelo" option-value="Modelo" option-label="Modelo" map-options
-                      @input="form.modelo = modelo.Modelo, form.nox = modelo.Nox, form.rendimiento = modelo.Rendimiento"
-                    />
+                    <q-select outlined v-model="modelo" :options="filterModelos" label="Seleccione el modelo" option-value="Modelo" option-label="Modelo"  use-input input-debounce="0" map-options
+                      @input="form.modelo = modelo.Modelo, form.nox = modelo.Nox, form.rendimiento = modelo.Rendimiento" @filter="filterModelo"
+                      :error="$v.modelo.$error" @blur="$v.modelo.$touch()"/>
                   </div>
                   <div class="column q-mt-md">
                     <div class="text-subtitle2 text-bold q-pb-sm">Valor:</div>
-                    <q-input outlined v-model="form.precio" type="number" dense label="Valor del vehiculo"/>
+                    <q-input outlined v-model="form.precio" type="number" dense label="Valor del vehiculo"
+                    :error="$v.form.precio.$error" @blur="$v.form.precio.$touch()"/>
                   </div>
                 <div class="row justify-end q-mt-md" style="width:100%">
                   <q-btn label="calcular impuesto" color="grey-5" class="q-py-xs" push @click="calcular()" />
@@ -76,16 +77,6 @@
                   </div>
                   <div class="row q-mt-md" style="width:100%">
                     <div class="column q-mr-md" style="width:45%">
-                      <div class="text-subtitle2 text-bold q-pb-sm">Carga útil:</div>
-                      <q-input outlined v-model="resultado.carga" disable />
-                    </div>
-                    <div style="width:50%">
-                      <div class="text-subtitle2 text-bold q-pb-sm">Numero de asientos:</div>
-                      <q-input outlined v-model="resultado.asiento" disable />
-                    </div>
-                  </div>
-                  <div class="row q-mt-md" style="width:100%">
-                    <div class="column q-mr-md" style="width:45%">
                       <div class="text-subtitle2 text-bold q-pb-sm">Valor al dia de hoy:</div>
                       <q-input outlined v-model="resultado.utm" disable />
                     </div>
@@ -104,6 +95,7 @@
 </template>
 
 <script>
+import { required } from 'vuelidate/lib/validators'
 export default {
   data () {
     return {
@@ -111,6 +103,9 @@ export default {
       text: '',
       mostrar: false,
       options: [],
+      filterMarcas: this.marcasO,
+      filterTipos: this.tiposO,
+      filterModelos: this.modelosO,
       inicio: true,
       resultado: [],
       marcasO: [],
@@ -123,27 +118,52 @@ export default {
       utm: []
     }
   },
+  validations: {
+    form: {
+      precio: { required }
+
+    },
+    marca: { required },
+    modelo: { required },
+    nox: { required },
+    rendimiento: { required },
+    tipo: { required }
+
+  },
   methods: {
     async calcular () {
-      this.$q.loading.show()
-      await this.$api.post('value_utm').then(res => {
-        this.utm = res
-        this.inicio = false
-        this.mostrar = true
-        console.log(this.utm, 'respuesta')
-        console.log(this.form, 'form')
-        const resul1 = (35 / this.form.rendimiento)
-        const resul2 = (120 * this.form.nox)
-        const resul3 = resul1 + resul2
-        const resul4 = (this.form.precio * 0.00000006)
-        const resul5 = resul3 * resul4
-        this.resultado.costo = resul5
-        this.resultado.nox = this.form.nox
-        this.resultado.rendimiento = this.form.rendimiento
-        this.resultado.utm = this.utm.searched_utm_value
-        console.log(this.resultado)
-        this.$q.loading.hide()
-      })
+      this.$v.form.$touch()
+      this.$v.marca.$touch()
+      this.$v.modelo.$touch()
+      this.$v.tipo.$touch()
+      if (!this.$v.form.$error && !this.$v.marca.$error && !this.$v.modelo.$error && !this.$v.tipo.$error) {
+        this.$q.loading.show()
+        await this.$api.post('value_utm').then(res => {
+          this.utm = res
+          this.inicio = false
+          this.mostrar = true
+          const resul1 = (35 / this.form.rendimiento)
+          const resul2 = (120 * this.form.nox)
+          const resul3 = resul1 + resul2
+          const resul4 = (this.form.precio * 0.00000006)
+          const resul5 = resul3 * resul4
+          this.resultado.costo = resul5
+          this.resultado.nox = this.form.nox
+          this.resultado.rendimiento = this.form.rendimiento
+          this.resultado.utm = this.utm.searched_utm_value
+          this.form.valor_utm = parseFloat(this.resultado.utm)
+          this.form.precio = parseFloat(this.form.precio)
+          this.form.impuesto = this.resultado.costo
+          this.registro()
+          console.log(this.resultado)
+          this.$q.loading.hide()
+        })
+      } else {
+        this.$q.notify({
+          message: 'Faltan campos por llenar',
+          color: 'negative'
+        })
+      }
     },
     async datos () {
       this.$q.loading.show()
@@ -168,6 +188,10 @@ export default {
       this.marcasO = marcas
     },
     filtrarTipos () {
+      this.tipo = null
+      this.modelo = null
+      this.form.marca = this.marca
+      this.modelosO = []
       const tipos = []
       const tiposFilter = this.todo.filter(v => v.Marca === this.marca)
       for (const j of tiposFilter) {
@@ -194,6 +218,49 @@ export default {
         }
       }
       this.modelosO = modelos
+    },
+    filterMarca (val, update) {
+      if (val === '') {
+        update(() => {
+          this.filterMarcas = this.marcasO
+        })
+        return
+      }
+
+      update(() => {
+        const needle = val.toLowerCase()
+        this.filterMarcas = this.marcasO.filter(v => v.Marca.toLowerCase().indexOf(needle) > -1)
+      })
+    },
+    filterTipo (val, update) {
+      if (val === '') {
+        update(() => {
+          this.filterTipos = this.tiposO
+        })
+        return
+      }
+
+      update(() => {
+        const needle = val.toLowerCase()
+        this.filterTipos = this.tiposO.filter(v => v.Tipo.toLowerCase().indexOf(needle) > -1)
+      })
+    },
+    filterModelo (val, update) {
+      if (val === '') {
+        update(() => {
+          this.filterModelos = this.modelosO
+        })
+        return
+      }
+
+      update(() => {
+        const needle = val.toLowerCase()
+        this.filterModelos = this.modelosO.filter(v => v.Modelo.toLowerCase().indexOf(needle) > -1)
+      })
+    },
+    async registro () {
+      this.$api.post('registro', this.form).then(res => {
+      })
     }
   },
   mounted () {

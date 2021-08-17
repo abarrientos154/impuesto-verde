@@ -5,7 +5,7 @@
 // const fs = require('fs')
 // var randomize = require('randomatic');
 const axios = require('axios')
-
+var moment = require('moment');
 
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
@@ -21,7 +21,7 @@ class UploadController {
       method: 'post',
       url: 'https://www.calcular.cl/index.php/utm/ajax_call',
       data: {
-        searchDate: '2021-09-01'
+        searchDate: moment().format('YYYY-MM-DD')
       }
     })
     console.log(data.data, '73486784')

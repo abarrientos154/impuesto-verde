@@ -40,6 +40,7 @@ addPrefixToGroup(
     // Route.post("register", "UserController.register")
     Route.post("value_utm", "UploadController.dataValueUtm")
     Route.get("consulta", "DetailVehicleController.consulta")
+    Route.post("registro", "DatoController.store")
   })
 );
 
