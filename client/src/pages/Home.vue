@@ -81,8 +81,12 @@
                       <q-input outlined v-model="resultado.utm" disable />
                     </div>
                     <div style="width:50%">
-                      <div class="text-subtitle2 text-bold q-pb-sm">Impuesto a Pagar:</div>
+                      <div class="text-subtitle2 text-bold q-pb-sm">Valor del impuesto en UTM:</div>
                       <q-input outlined v-model="resultado.costo" disable />
+                    </div>
+                    <div style="width:50%">
+                      <div class="text-subtitle2 q-mt-md text-bold q-pb-sm">Valor del impuesto:</div>
+                      <q-input outlined v-model="resultado.valor_pesos" disable prefix="CLP" />
                     </div>
                   </div>
                 </div>
@@ -147,13 +151,15 @@ export default {
           const resul3 = resul1 + resul2
           const resul4 = (this.form.precio * 0.00000006)
           const resul5 = resul3 * resul4
-          this.resultado.costo = resul5
+          this.resultado.costo = resul5.toFixed(2)
           this.resultado.nox = this.form.nox
           this.resultado.rendimiento = this.form.rendimiento
-          this.resultado.utm = this.utm.searched_utm_value
+          this.resultado.utm = parseFloat(this.utm.searched_utm_value).toFixed(2)
           this.form.valor_utm = parseFloat(this.resultado.utm)
+          this.resultado.valor_pesos = (this.resultado.utm * this.resultado.costo).toFixed(2)
           this.form.precio = parseFloat(this.form.precio)
           this.form.impuesto = this.resultado.costo
+          this.form.valor_pesos = this.resultado.valor_pesos
           this.registro()
           console.log(this.resultado)
           this.$q.loading.hide()
