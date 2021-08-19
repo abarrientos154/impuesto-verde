@@ -89,6 +89,9 @@
                       <q-input outlined v-model="resultado.valor_pesos" disable prefix="CLP" />
                     </div>
                   </div>
+                  <div class="row justify-end q-mt-md" style="width:100%">
+                    <q-btn label="Calcular nuevamente" color="grey-5" class="q-py-xs" push @click="regreso()" />
+                </div>
                 </div>
             </div>
           </q-card>
@@ -151,16 +154,19 @@ export default {
           const resul3 = resul1 + resul2
           const resul4 = (this.form.precio * 0.00000006)
           const resul5 = resul3 * resul4
-          this.resultado.costo = resul5.toFixed(2)
+          this.resultado.costo = parseFloat(resul5)
           this.resultado.nox = this.form.nox
           this.resultado.rendimiento = this.form.rendimiento
-          this.resultado.utm = parseFloat(this.utm.searched_utm_value).toFixed(2)
+          this.resultado.utm = parseFloat(this.utm.searched_utm_value)
           this.form.valor_utm = parseFloat(this.resultado.utm)
-          this.resultado.valor_pesos = (this.resultado.utm * this.resultado.costo).toFixed(2)
+          this.resultado.valor_pesos = (this.resultado.utm * this.resultado.costo)
           this.form.precio = parseFloat(this.form.precio)
           this.form.impuesto = this.resultado.costo
           this.form.valor_pesos = this.resultado.valor_pesos
           this.registro()
+          this.resultado.utm = this.formatPrice(this.resultado.utm)
+          this.resultado.costo = this.formatPrice(this.resultado.costo)
+          this.resultado.valor_pesos = this.formatPrice(this.resultado.valor_pesos)
           console.log(this.resultado)
           this.$q.loading.hide()
         })
@@ -267,6 +273,23 @@ export default {
     async registro () {
       this.$api.post('registro', this.form).then(res => {
       })
+    },
+    regreso () {
+      this.$v.form.$reset()
+      this.$v.marca.$reset()
+      this.$v.modelo.$reset()
+      this.$v.tipo.$reset()
+      this.resultado = {}
+      this.form = {}
+      this.tipo = null
+      this.modelo = null
+      this.marca = null
+      this.inicio = true
+      this.mostrar = false
+    },
+    formatPrice (value) {
+      const val = (value / 1).toFixed(2).replace('.', ',')
+      return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')
     }
   },
   mounted () {
