@@ -5,7 +5,7 @@ const Model = use('Model')
 
 class Dato extends Model {
   static get fillable() {
-    return ['marca', 'tipo', 'modelo', 'nox', 'rendimiento', 'precio', 'valor_utm', 'impuesto', 'valor_pesos' ]
+    return ['marca', 'tipo', 'modelo', 'nox', 'rendimiento', 'precio', 'valor_utm', 'impuesto', 'valor_pesos', 'id_general' ]
   }
   static fieldValidationRules() {
     const rulesUser = {
@@ -17,9 +17,14 @@ class Dato extends Model {
       valor_utm: "number",
       precio: "number",
       impuesto: "number",
-      valor_pesos: "number"
+      valor_pesos: "number",
+      id_general: "string"
     }
     return rulesUser
+  }
+  misma () {
+    console.log('1314')
+    return this.hasOne('App/Models/DetailVehicle', 'id_general', '_id')
   }
 }
 

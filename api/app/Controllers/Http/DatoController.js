@@ -8,6 +8,7 @@
  * Resourceful controller for interacting with datoes
  */
  const Datos = use("App/Models/Dato")
+ const Carros = use("App/Models/DetailVehicle")
  const { validate } = use("Validator")
 class DatoController {
   /**
@@ -20,6 +21,19 @@ class DatoController {
    * @param {View} ctx.view
    */
   async index ({ request, response, view }) {
+  }
+
+  async consulta ({ request, response, view }) {
+    let datos = await Datos.query().count('id_general')
+    let todos = datos.sort((b,a)=>a.count-b.count)
+    let format = []
+
+    for (var i = 0; todos.length > 16 ? i < 16 : i < todos.length ; i++) {
+      todos[i].misma = await Carros.find(todos[i]._id)
+      format.push(todos[i])
+
+    }
+    response.send(format)
   }
 
   /**

@@ -16,7 +16,11 @@
       <div class="q-mt-xl" style="width:45%">
         <div class="q-mt-xl">
           <q-card v-if="inicio" style="border-radius:12px">
-            <div class="q-pb-md"></div>
+            <div class="column items-center justify-center">
+              <div style="width:50%">
+                <q-img src="logo2.svg" style="margin-top:20px"></q-img>
+              </div>
+            </div>
               <div class="q-pa-md bg-blue" style="border-top-right-radius:35px;border-bottom-right-radius:35px; width:70%" >
                 <div class="text-white q-ml-md text-h5" >Detalles del Vehiculo</div>
               </div>
@@ -38,7 +42,7 @@
                   <div class="column q-mt-md">
                     <div class="text-subtitle2 text-bold q-pb-sm">Modelo:</div>
                     <q-select outlined v-model="modelo" :options="filterModelos" label="Seleccione el modelo" option-value="Modelo" option-label="Modelo"  use-input input-debounce="0" map-options
-                      @input="form.modelo = modelo.Modelo, form.nox = modelo.Nox, form.rendimiento = modelo.Rendimiento" @filter="filterModelo"
+                      @input="form.modelo = modelo.Modelo, form.nox = modelo.Nox, form.rendimiento = modelo.Rendimiento, form.id_general = modelo._id " @filter="filterModelo"
                       :error="$v.modelo.$error" @blur="$v.modelo.$touch()"/>
                   </div>
                   <div class="column q-mt-md">
@@ -48,11 +52,16 @@
                   </div>
                 <div class="row justify-end q-mt-md" style="width:100%">
                   <q-btn label="calcular impuesto" color="grey-5" class="q-py-xs" push @click="calcular()" />
+                  <q-btn label="calcular" color="grey-5" class="q-py-xs" push @click="prueba()" />
                 </div>
               </div>
           </q-card>
           <q-card v-if="mostrar" style="border-radius:12px">
-            <div class="q-pb-md"></div>
+          <div class="column items-center justify-center">
+              <div style="width:50%">
+                <q-img src="logo2.svg" style="margin-top:20px"></q-img>
+              </div>
+            </div>
             <div class="column justify-end items-end">
               <div class="q-py-sm bg-blue column justify-start items-start" style="border-top-left-radius:35px;border-bottom-left-radius:35px; width:70%" >
                 <div class="row justify-center items-center">
@@ -98,6 +107,90 @@
         </div>
       </div>
     </div>
+    <div class="q-pa-xl">
+      <q-card flat class="q-pa-md q-mt-md">
+        <div class="text-h4 text-bold q-pb-md" >CONOCE LOS VEHICULOS MAS BUSCADOS</div>
+          <div class="row">
+            <div style="width:25%" v-for="(item,index) in registros" :key="index" class="text-black q-pb-md">{{item.misma.Marca}} {{item.misma.Modelo}}.</div>
+          </div>
+      </q-card>
+
+      <q-card flat>
+        <q-img src="carro.svg"></q-img>
+      </q-card>
+      <div style="width:100%">
+        <q-card flat class="q-pa-md q-mt-lg" style="width: 80%">
+          <div class="text-h4 text-bold" >QUE ES EL IMPUESTO VERDE</div>
+          <div>
+            <div class="q-mt-md text-h7" >El impuesto verde es una estrategia, basada en el cobro de impuestos, que busca disminuir
+              la generación de Gases de efecto invernadero producida por el parque vehícular de nuestro
+              país. Esto se lleva a cabo castigando con un mayor impuesto a aquellos vehículos más
+              contaminantes, y por otro lado, beneficiando con un pago de impuesto mucho más bajos a
+              los vehículos con tecnologías amigables al medio ambiente.
+              Este impuesto se paga una única vez al comprar vehículos motorizados nuevos, livianos
+              y medianos, exceptuando algunos casos. Y no se podrán inscribir los vehículos en el
+              Registro Civil sin que se acredite el pago del impuesto. </div>
+            <div class="q-mt-md row">
+            <div class="q-pr-sm text-h7" >El impuesto verde se estableció en la reforma tributaria realizada el año 2014, por medio de la <a href="https://www.bcn.cl/leychile/navegar?idNorma=1067194">Ley 20.780 y especificada en el Artículo 3.</a></div>
+            </div>
+          </div>
+        </q-card>
+      </div>
+      <q-img src="carro.svg"></q-img>
+      <div class="row justify-end" style="width:100%">
+        <q-card flat class="q-pa-md q-mt-lg" style="width: 80%">
+          <div class="text-h4 text-right text-bold" >QUIEN NO PAGA IMPUESTO VERDE</div>
+          <div class="q-mt-lg text-h7 text-right text-bold" >El uso de vehículos en los siguientes casos, o vehículos con las siguientes características, están exentos de pagar el impuesto verde:</div>
+            <div class="q-mt-md">
+              <q-card flat class="row justify-end" v-for="(item,index) in listado" :key="index" >
+                <div class="row">
+                  <div>{{index+1 + '-'}} </div>
+                  <div class="q-pl-xs text-black">{{item.nombre}} </div>
+                  <div v-if="item.descripcion" class="q-pl-xs text-black">{{'(' + item.descripcion + ')'}} </div>
+                </div>
+              </q-card>
+            </div>
+            <div class="q-mt-md text-h7 text-right text-bold" >Sobre los vehículos que fueron inscritos como táxi:</div>
+            <div class="q-mt-xs text-h7 text-right" >Los contribuyentes a que una vez pagado el vehículo lo registren para prestar servicios de taxi, en cualquiera de sus modalidades, tendrán derecho a una devolución del impuesto, el cual se hará por medio de la <a class="text-primary" href="https://www.tgr.cl/"> Tesorería General de la República.</a> Para ello deberán contar con el comprobante de pago, el que deberá hacer referencia al número de inscripción del vehículo</div>
+        </q-card>
+        </div>
+
+        <q-img src="carro.svg"></q-img>
+        <q-card flat class="q-pa-md q-mt-lg" style="width: 80%">
+          <div class="text-h4 text-bold" >¿CÓMO SE CALCULA EL IMPUESTO VERDE?</div>
+          <div class="q-mt-lg text-h7 text-bold" >El cálculo del impuesto verde se detalla en el artículo 3 de la reforma tributaria, Ley 20.780 de 2014, y depende de los siguientes parámetros y variables:</div>
+            <div class="q-px-md q-mt-md">
+              <div>Parámetros del vehículo:</div>
+              <div>- Rendimiento urbano (km/lt)</div>
+              <div>- Emisión de NOx (g/km)</div>
+              <div>Estos parámetros son preestablecidos al seleccionar el modelo del vehículo, y son datos que se actualizan bajo la responsabilidad del Ministerio de Transportes y Telecomunicaciones. Puedes verificar el listado completo de vehículos nuevos y sus parámetros <a class="text-primary" href="https://www4.sii.cl/calcImpVehiculoNuevoInternet/internet.html?modulo=listado">en esta página de servicios impuestos internos.</a></div>
+              <div>Variables del vehículo:</div>
+              <div>Precio de venta ($)</div>
+              <div>Esta variable es determinada por el usuario y corresponde al precio de venta del vehículo en la automotora.</div>
+              <div class="text-bold q-mt-md">Cálculo del impuesto verde</div>
+              <div style="width:500px">
+                <q-img src="formula.png"></q-img>
+                <div>El resultado del cálculo anterior entregará un valor numérico medido en <a class="text-primary" href="https://es.wikipedia.org/wiki/Unidad_tributaria_mensual"> Unidades Tributarias Mensuales</a>, el cual debe multiplicarse por el valor actual de la UTM, que se puede verificar en el <a href="https://bcentral.cl/">Banco Central</a>, y eso corresponde al valor final. </div>
+              </div>
+            </div>
+        </q-card>
+
+        <q-img src="carro.svg"></q-img>
+        <q-card flat class="q-pa-md q-mt-lg" style="width: 80%">
+          <div class="text-h4 text-bold" >¿CÓMO SE PAGA EL IMPUESTO VERDE?</div>
+          <div class="q-mt-lg text-h7" >El formulario se paga por internet en la Tesorería general de la república al realizar la <a href="https://www.tgr.cl/tramites-tgr/declaracion-y-pago-impuesto-verde-a-fuentes-moviles/">Declaración y Pago Impuesto Verde a Fuentes Móviles, l</a>, la cual se realiza por medio del Formulario 88. </div>
+            <div class="q-mt-md text-bold">¿Qué necesito para realizar el pago del impuesto?</div>
+            <div>La factura de compra del vehículo o declaración de ingreso (DIN).</div>
+        </q-card>
+
+    </div>
+      <div class="column items-center justify-center">
+        <div style="width:20%">
+          <q-img src="logo.svg"></q-img>
+        </div>
+        <div class="q-pb-xl text-h7" >Impuesto verde Power by SEO Proyectos I  Desarrollado por EICHE</div>
+      </div>
+
   </div>
 </template>
 
@@ -119,10 +212,70 @@ export default {
       modelosO: [],
       tiposO: [],
       todo: [],
+      registros: [],
       marca: null,
       modelo: null,
       tipo: null,
-      utm: []
+      buscado: {},
+      utm: [],
+      listado: [
+        {
+          nombre: 'Transporte de pasajeros',
+          descripcion: 'Capacidad mayor a 9 asientos incluído chofer'
+        },
+        {
+          nombre: 'Servicio de Taxi',
+          descripcion: 'Cualquier modalidad'
+        },
+        {
+          nombre: 'Camiones, camionetas y furgones',
+          descripcion: 'De capacidad de carga útil mayor a 2.000 Kg'
+        },
+        {
+          nombre: 'Furgones cerrados',
+          descripcion: 'De capacidad menor a 2.000 Kg'
+        },
+        {
+          nombre: 'Camionetas menor a 2.000 Kg',
+          descripcion: 'Siempre y cuando sean activos inmovilizados del contribuyente'
+        },
+        {
+          nombre: 'Tractores',
+          descripcion: ''
+        },
+        {
+          nombre: 'Carretillas móviles',
+          descripcion: ''
+        },
+        {
+          nombre: 'Vehículos eléctricos',
+          descripcion: ''
+        },
+        {
+          nombre: 'Casa rodante',
+          descripcion: ''
+        },
+        {
+          nombre: 'Vehículos fuera de carretera',
+          descripcion: ''
+        },
+        {
+          nombre: 'Coches celulares',
+          descripcion: ''
+        },
+        {
+          nombre: 'Coches ambulancia',
+          descripcion: ''
+        },
+        {
+          nombre: 'Coches Mortuorios',
+          descripcion: ''
+        },
+        {
+          nombre: 'Coches blindados',
+          descripcion: ''
+        }
+      ]
     }
   },
   validations: {
@@ -168,6 +321,7 @@ export default {
           this.resultado.costo = this.formatPrice(this.resultado.costo)
           this.resultado.valor_pesos = this.formatPrice(this.resultado.valor_pesos)
           console.log(this.resultado)
+          console.log(this.form, 'formulario')
           this.$q.loading.hide()
         })
       } else {
@@ -185,6 +339,13 @@ export default {
           this.noRepetirMarcas()
         }
         this.$q.loading.hide()
+      })
+    },
+    async prueba () {
+      await this.$api.get('consulta_datos').then(res => {
+        if (res) {
+          this.registros = res
+        }
       })
     },
     noRepetirMarcas () {
@@ -225,7 +386,8 @@ export default {
           modelos.push({
             Modelo: j.Modelo,
             Nox: j.Nox,
-            Rendimiento: j.Rendimiento
+            Rendimiento: j.Rendimiento,
+            _id: j._id
           })
         }
       }
@@ -272,6 +434,9 @@ export default {
     },
     async registro () {
       this.$api.post('registro', this.form).then(res => {
+        if (res) {
+          console.log(this.form, 'form')
+        }
       })
     },
     regreso () {
@@ -294,6 +459,7 @@ export default {
   },
   mounted () {
     this.datos()
+    this.prueba()
   }
 }
 </script>
