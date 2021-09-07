@@ -1,16 +1,17 @@
 <template>
   <div>
-    <div class="row q-px-xl q-pb-xl">
-      <div class="column q-mr-md" style="width:50%">
-        <q-card flat class="" style="border-radius:12px; margin-top:100px">
-
+    <div class="row justify-center q-px-md q-pb-xl">
+      <div class="column col-xs-12 col-sm-5  q-mr-md">
+        <q-card flat style="border-radius:12px; margin-top:100px">
           <div class="q-mt-md text-bold text-h5">ASISTENTE DE CÁLCULO DE IMPUESTO A EMISIONES CONTAMINANTES DE VEHÍCULOS NUEVOS</div>
           <div class="q-mt-md text-h7">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.</div>
           <div class="q-mt-md text-h7">Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo.</div>
-          <div class="q-mt-md fondo" style="width:100%;height:100%;"></div>
+          <div style="width:100%">
+          <q-img src="fondo.jpeg"></q-img>
+        </div>
         </q-card>
       </div>
-      <div class="q-mt-xl" style="width:45%">
+      <div class="col-xs-12 col-sm-5 q-mt-xl">
         <div class="q-mt-xl">
           <q-card v-if="inicio" style="border-radius:12px">
             <div class="column items-center justify-center">
@@ -23,13 +24,13 @@
               </div>
               <div class="column q-pa-md">
                   <div class="row" style="width:100%">
-                    <div class="column q-mr-md" style="width:45%">
+                    <div class="col-xs-12 col-sm-6 column q-mr-md">
                       <div class="text-subtitle2 text-bold q-pb-sm">Marca:</div>
                       <q-select outlined v-model="marca" :options="filterMarcas" option-value="Marca" option-label="Marca" label="Seleccione una Marca" use-input input-debounce="0" emit-value map-options
                         @input="filtrarTipos()" @filter="filterMarca"
                         :error="$v.marca.$error" @blur="$v.marca.$touch()"/>
                     </div>
-                    <div style="width:50%">
+                    <div class="col-xs-12 col-sm-5">
                       <div class="text-subtitle2 text-bold q-pb-sm">Tipo de Vehiculo:</div>
                       <q-select outlined v-model="tipo" :options="filterTipos" label="Seleccione una opcion" option-value="Tipo" option-label="Tipo" use-input input-debounce="0" emit-value map-options
                         @input="filtrarModelos(), modelo = null, form.tipo = tipo" @filter="filterTipo"
@@ -53,7 +54,7 @@
               </div>
           </q-card>
           <q-card v-if="mostrar" style="border-radius:12px">
-          <div class="column items-center justify-center">
+            <div class="column items-center justify-center">
               <div style="width:50%">
                 <q-img src="logo2.svg" style="margin-top:20px"></q-img>
               </div>
@@ -94,11 +95,11 @@
                       <q-input outlined v-model="resultado.valor_pesos" disable prefix="CLP" />
                     </div>
                   </div>
-                  <div class="row justify-end q-mt-md" style="width:100%">
-                    <q-btn label="Calcular nuevamente" color="grey-5" class="q-py-xs" push @click="regreso()" />
+                    <div class="row justify-end q-mt-md" style="width:100%">
+                      <q-btn label="Calcular nuevamente" color="grey-5" class="q-py-xs" push @click="regreso()" />
+                    </div>
                 </div>
-                </div>
-            </div>
+              </div>
           </q-card>
         </div>
       </div>
@@ -112,7 +113,7 @@
       </q-card>
 
       <q-card flat>
-        <q-img src="carro.svg"></q-img>
+        <q-img src="impuesto_verde1.jpg"></q-img>
       </q-card>
       <div style="width:100%">
         <q-card flat class="q-pa-md q-mt-lg" style="width: 80%">
@@ -132,13 +133,13 @@
           </div>
         </q-card>
       </div>
-      <q-img src="carro.svg"></q-img>
-      <div class="row justify-end" style="width:100%">
+      <q-img src="impuesto_verde2.jpg"></q-img>
+      <div class="row" style="width:100%">
         <q-card flat class="q-pa-md q-mt-lg" style="width: 80%">
-          <div class="text-h4 text-right text-bold" >QUIEN NO PAGA IMPUESTO VERDE</div>
-          <div class="q-mt-lg text-h7 text-right text-bold" >El uso de vehículos en los siguientes casos, o vehículos con las siguientes características, están exentos de pagar el impuesto verde:</div>
+          <div class="text-h4 text-bold" >QUIEN NO PAGA IMPUESTO VERDE</div>
+          <div class="q-mt-lg text-h7 text-bold" >El uso de vehículos en los siguientes casos, o vehículos con las siguientes características, están exentos de pagar el impuesto verde:</div>
             <div class="q-mt-md">
-              <q-card flat class="row justify-end" v-for="(item,index) in listado" :key="index" >
+              <q-card flat class="row" v-for="(item,index) in listado" :key="index" >
                 <div class="row">
                   <div>{{index+1 + '-'}} </div>
                   <div class="q-pl-xs text-black">{{item.nombre}} </div>
@@ -146,12 +147,12 @@
                 </div>
               </q-card>
             </div>
-            <div class="q-mt-md text-h7 text-right text-bold" >Sobre los vehículos que fueron inscritos como táxi:</div>
-            <div class="q-mt-xs text-h7 text-right" >Los contribuyentes a que una vez pagado el vehículo lo registren para prestar servicios de taxi, en cualquiera de sus modalidades, tendrán derecho a una devolución del impuesto, el cual se hará por medio de la <a class="text-primary" href="https://www.tgr.cl/"> Tesorería General de la República.</a> Para ello deberán contar con el comprobante de pago, el que deberá hacer referencia al número de inscripción del vehículo</div>
+            <div class="q-mt-md text-h7 text-bold" >Sobre los vehículos que fueron inscritos como táxi:</div>
+            <div class="q-mt-xs text-h7" >Los contribuyentes a que una vez pagado el vehículo lo registren para prestar servicios de taxi, en cualquiera de sus modalidades, tendrán derecho a una devolución del impuesto, el cual se hará por medio de la <a class="text-primary" href="https://www.tgr.cl/"> Tesorería General de la República.</a> Para ello deberán contar con el comprobante de pago, el que deberá hacer referencia al número de inscripción del vehículo</div>
         </q-card>
         </div>
 
-        <q-img src="carro.svg"></q-img>
+        <q-img src="impuesto_verde3.jpg"></q-img>
         <q-card flat class="q-pa-md q-mt-lg" style="width: 80%">
           <div class="text-h4 text-bold" >¿CÓMO SE CALCULA EL IMPUESTO VERDE?</div>
           <div class="q-mt-lg text-h7 text-bold" >El cálculo del impuesto verde se detalla en el artículo 3 de la reforma tributaria, Ley 20.780 de 2014, y depende de los siguientes parámetros y variables:</div>
@@ -164,29 +165,27 @@
               <div>Precio de venta ($)</div>
               <div>Esta variable es determinada por el usuario y corresponde al precio de venta del vehículo en la automotora.</div>
               <div class="text-bold q-mt-md">Cálculo del impuesto verde</div>
-              <div style="width:500px">
+              <div style="width:100%">
                 <q-img src="formula.png"></q-img>
                 <div>El resultado del cálculo anterior entregará un valor numérico medido en <a class="text-primary" href="https://es.wikipedia.org/wiki/Unidad_tributaria_mensual"> Unidades Tributarias Mensuales</a>, el cual debe multiplicarse por el valor actual de la UTM, que se puede verificar en el <a href="https://bcentral.cl/">Banco Central</a>, y eso corresponde al valor final. </div>
               </div>
             </div>
         </q-card>
 
-        <q-img src="carro.svg"></q-img>
-        <q-card flat class="q-pa-md q-mt-lg" style="width: 80%">
-          <div class="text-h4 text-bold" >¿CÓMO SE PAGA EL IMPUESTO VERDE?</div>
-          <div class="q-mt-lg text-h7" >El formulario se paga por internet en la Tesorería general de la república al realizar la <a href="https://www.tgr.cl/tramites-tgr/declaracion-y-pago-impuesto-verde-a-fuentes-moviles/">Declaración y Pago Impuesto Verde a Fuentes Móviles, l</a>, la cual se realiza por medio del Formulario 88. </div>
-            <div class="q-mt-md text-bold">¿Qué necesito para realizar el pago del impuesto?</div>
-            <div>La factura de compra del vehículo o declaración de ingreso (DIN).</div>
-        </q-card>
-
+          <q-img src="impuesto_verde4.jpg"></q-img>
+            <q-card flat class="q-pa-md q-mt-lg" style="width: 80%">
+              <div class="text-h4 text-bold" >¿CÓMO SE PAGA EL IMPUESTO VERDE?</div>
+              <div class="q-mt-lg text-h7" >El formulario se paga por internet en la Tesorería general de la república al realizar la <a href="https://www.tgr.cl/tramites-tgr/declaracion-y-pago-impuesto-verde-a-fuentes-moviles/">Declaración y Pago Impuesto Verde a Fuentes Móviles, l</a>, la cual se realiza por medio del Formulario 88. </div>
+                <div class="q-mt-md text-bold">¿Qué necesito para realizar el pago del impuesto?</div>
+                <div>La factura de compra del vehículo o declaración de ingreso (DIN).</div>
+            </q-card>
     </div>
       <div class="column items-center justify-center">
         <div style="width:20%">
           <q-img src="logo.svg"></q-img>
         </div>
-        <div class="q-pb-xl text-h7" >Impuesto verde Power by SEO Proyectos I  Desarrollado por EICHE</div>
+        <div class="q-pb-xl text-h7 text-center" >Impuesto verde Power by SEO Proyectos I  Desarrollado por EICHE</div>
       </div>
-
   </div>
 </template>
 
@@ -320,6 +319,7 @@ export default {
           console.log(this.form, 'formulario')
           this.$q.loading.hide()
         })
+        this.prueba()
       } else {
         this.$q.notify({
           message: 'Faltan campos por llenar',
