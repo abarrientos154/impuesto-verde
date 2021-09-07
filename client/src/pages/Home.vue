@@ -2,15 +2,12 @@
   <div>
     <div class="row q-px-xl q-pb-xl">
       <div class="column q-mr-md" style="width:50%">
-        <q-card flat class="" style="border-radius:12px">
-          <div class="q-pl-md q-pt-md row items-center">
-            <q-img src="favicon.ico" width="70px" height="70px" />
-            <div class="q-pl-sm text-primary text-bold text-h6"> impuesto </div>
-          </div>
+        <q-card flat class="" style="border-radius:12px; margin-top:100px">
+
           <div class="q-mt-md text-bold text-h5">ASISTENTE DE CÁLCULO DE IMPUESTO A EMISIONES CONTAMINANTES DE VEHÍCULOS NUEVOS</div>
           <div class="q-mt-md text-h7">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.</div>
           <div class="q-mt-md text-h7">Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo.</div>
-          <div class="fondo" style="width:100%;height:70%;"></div>
+          <div class="q-mt-md fondo" style="width:100%;height:100%;"></div>
         </q-card>
       </div>
       <div class="q-mt-xl" style="width:45%">
@@ -52,7 +49,6 @@
                   </div>
                 <div class="row justify-end q-mt-md" style="width:100%">
                   <q-btn label="calcular impuesto" color="grey-5" class="q-py-xs" push @click="calcular()" />
-                  <q-btn label="calcular" color="grey-5" class="q-py-xs" push @click="prueba()" />
                 </div>
               </div>
           </q-card>
